@@ -1,0 +1,17 @@
+{
+  "name": "dext-core-utils",
+  "version": "0.0.0",
+  "description": "Utility modules shared between Dext and Dext Package Manager.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vu Tran <vu@vu-tran.com>",
+  "license": "MIT",
+  "dependencies": {
+    "conf": "^0.11.2",
+    "download": "^5.0.2",
+    "npm-name": "^3.0.0",
+    "rimraf": "^2.5.4"
+  }
+}
