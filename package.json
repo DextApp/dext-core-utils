@@ -7,6 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Vu Tran <vu@vu-tran.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vutran/dext-core-utils"
+  },
   "license": "MIT",
   "dependencies": {
     "conf": "^0.11.2",
