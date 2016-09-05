@@ -113,9 +113,20 @@ const setTheme = theme => new Promise(resolve => {
   resolve();
 });
 
+/**
+ * Retrieve the current theme
+ *
+ * @return {String} - The current name of the theme
+ */
+const getTheme = () => new Promise(resolve => {
+  const currentTheme = config.get('theme');
+  resolve(currentTheme || '');
+});
+
 module.exports = {
   checkOnNpm,
   install,
   uninstall,
   setTheme,
+  getTheme,
 };
