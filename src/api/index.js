@@ -1,3 +1,4 @@
+const fs = require('fs');
 const { spawn } = require('child_process');
 const rimraf = require('rimraf');
 const npmName = require('npm-name');
@@ -9,6 +10,7 @@ const {
 } = require('../errors');
 const Conf = require('../utils/conf');
 const { downloadPackage } = require('../utils/download');
+const { getPluginPath } = require('../utils/paths');
 
 const config = new Conf();
 
@@ -87,6 +89,32 @@ const uninstall = (plugin, srcDir) => new Promise(resolve => {
 });
 
 /**
+ * Creates a symlink for the current directory to the Dext plugin directory
+ *
+ * @param {String} plugin - The name of the plugin/package
+ * @param {String} src - The source directory to link
+ * @return {Promise}
+ */
+const createSymLink = (plugin, src) => new Promise(resolve => {
+  fs.link(src, getPluginPath(plugin), () => {
+    resolve(true);
+  });
+});
+
+/**
+ * Removes symlink for the given plugin
+ *
+ * @param {String} src - The source directory to link
+ * @param {String} plugin - The name of the plugin/package
+ * @return {Promise}
+ */
+const removeSymLink = plugin => new Promise(resolve => {
+  fs.unlink(getPluginPath(plugin), () => {
+    resolve(true);
+  });
+});
+
+/**
  * Switches your current theme
  *
  * @param {String} theme - The name of the theme
@@ -136,6 +164,8 @@ module.exports = {
   checkOnNpm,
   install,
   uninstall,
+  createSymLink,
+  removeSymLink,
   setTheme,
   getTheme,
   getConfig,
