@@ -123,10 +123,20 @@ const getTheme = () => new Promise(resolve => {
   resolve(currentTheme || '');
 });
 
+/**
+ * Retrieve the current config
+ *
+ * @return {Object} - The current configuration
+ */
+const getConfig = () => new Promise(resolve => {
+  resolve(config.store);
+});
+
 module.exports = {
   checkOnNpm,
   install,
   uninstall,
   setTheme,
   getTheme,
+  getConfig,
 };
