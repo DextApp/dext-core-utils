@@ -93,11 +93,15 @@ const uninstall = (plugin, srcDir) => new Promise(resolve => {
  *
  * @param {String} plugin - The name of the plugin/package
  * @param {String} src - The source directory to link
- * @return {Promise}
+ * @return {Promise} - An object shape with { srcPath, destPath }
  */
 const createSymLink = (plugin, src) => new Promise(resolve => {
-  fs.link(src, getPluginPath(plugin), () => {
-    resolve(true);
+  const dest = getPluginPath(plugin);
+  fs.link(src, dest, () => {
+    resolve({
+      srcPath: src,
+      destPath: dest,
+    });
   });
 });
 
@@ -106,11 +110,14 @@ const createSymLink = (plugin, src) => new Promise(resolve => {
  *
  * @param {String} src - The source directory to link
  * @param {String} plugin - The name of the plugin/package
- * @return {Promise}
+ * @return {Promise} - An object shape with { destPath }
  */
 const removeSymLink = plugin => new Promise(resolve => {
-  fs.unlink(getPluginPath(plugin), () => {
-    resolve(true);
+  const dest = getPluginPath(plugin);
+  fs.unlink(dest, () => {
+    resolve({
+      destPath: dest,
+    });
   });
 });
 
