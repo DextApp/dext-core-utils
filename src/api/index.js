@@ -1,4 +1,3 @@
-const path = require('path');
 const { spawn } = require('child_process');
 const rimraf = require('rimraf');
 const npmName = require('npm-name');
@@ -10,15 +9,14 @@ const {
 } = require('../errors');
 const Conf = require('../utils/conf');
 const { downloadPackage } = require('../utils/download');
-const { PLUGIN_PATH } = require('../utils/paths');
 
 const config = new Conf();
 
 /**
- * Checks if it exists on npm
+ * Checks if the plugin/package exists on npm
  *
- * @param {String} plugin - The name of the plugin
- * @return {Promise}
+ * @param {String} plugin - The name of the plugin/package
+ * @return {Promise} - Throws an error if the plugin/package doesn't exist
  */
 const checkOnNpm = plugin => new Promise(resolve => {
   npmName(plugin).then(available => {
@@ -30,12 +28,13 @@ const checkOnNpm = plugin => new Promise(resolve => {
 });
 
 /**
- * Installs a plugin
+ * Installs a plugin/package and saves it to the given directory
  *
- * @param {String} plugin - The name of the plugin
+ * @param {String} plugin - The name of the plugin/package
+ * @param {String} outputDir - The directory to install the plugin/package
  * @return {Promise}
  */
-const install = plugin => new Promise(resolve => {
+const install = (plugin, outputDir) => new Promise(resolve => {
   const plugins = config.get('plugins') || [];
 
   if (plugins.indexOf(plugin) > -1) {
@@ -44,8 +43,8 @@ const install = plugin => new Promise(resolve => {
 
   checkOnNpm(plugin).then(() => {
     // download, install, and update configs
-    downloadPackage(plugin).then(outputDir => {
-      const installProcess = spawn('npm', ['install', '--prefix', outputDir]);
+    downloadPackage(plugin, outputDir).then(output => {
+      const installProcess = spawn('npm', ['install', '--prefix', output]);
       installProcess.on('close', (code) => {
         if (!code) {
           plugins.push(plugin);
@@ -58,12 +57,13 @@ const install = plugin => new Promise(resolve => {
 });
 
 /**
- * Uninstalls a plugin
+ * Uninstalls a plugin/package from the given source directory
  *
- * @param {String} plugin - The name of the plugin
+ * @param {String} plugin - The name of the plugin/package
+ * @param {String} srcDir - The source directory of the plugin/package
  * @return {Promise}
  */
-const uninstall = plugin => new Promise(resolve => {
+const uninstall = (plugin, srcDir) => new Promise(resolve => {
   const plugins = config.get('plugins') || [];
 
   if (!plugins || !plugins.length) {
@@ -75,7 +75,7 @@ const uninstall = plugin => new Promise(resolve => {
   }
 
   // removes the directory
-  const pluginDir = path.resolve(PLUGIN_PATH, plugin);
+  const pluginDir = srcDir;
   rimraf(pluginDir, err => {
     if (err) {
       throw new Error(err);

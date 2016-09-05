@@ -1,7 +1,5 @@
-const path = require('path');
 const http = require('http');
 const download = require('download');
-const { PLUGIN_PATH } = require('./paths');
 
 const getPackageUrl = pkg => `http://registry.npmjs.org/${pkg}`;
 
@@ -9,9 +7,10 @@ const getPackageUrl = pkg => `http://registry.npmjs.org/${pkg}`;
  * Downloads and extracts the package
  *
  * @param {String} pkg - The name of the npm package
+ * @param {String} outputDir - The directory to download the plugin
  * @return {Promise} - The downloaded path
  */
-const downloadPackage = pkg => new Promise(resolve => {
+const downloadPackage = (pkg, outputDir) => new Promise(resolve => {
   let body = '';
 
   // retrieve the package details
@@ -25,7 +24,6 @@ const downloadPackage = pkg => new Promise(resolve => {
       // and download the the plugin directory
       const latestVersion = j['dist-tags'].latest;
       const downloadUrl = j.versions[latestVersion].dist.tarball;
-      const outputDir = path.resolve(PLUGIN_PATH, pkg);
       const options = {
         extract: true,
         map: file => Object.assign({}, file, {
