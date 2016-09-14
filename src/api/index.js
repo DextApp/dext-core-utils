@@ -68,7 +68,7 @@ const install = (plugin, outputDir) => new Promise(resolve => {
 const uninstall = (plugin, srcDir) => new Promise(resolve => {
   const plugins = config.get('plugins') || [];
 
-  if (!plugins || !plugins.length) {
+  if (!plugins.length) {
     throw new Error(ERR_MODULE_NOT_INSTALLED);
   }
 
@@ -135,7 +135,7 @@ const setTheme = theme => new Promise(resolve => {
     throw new Error(ERR_THEME_ALREADY_ACTIVE);
   }
 
-  if (!plugins || !plugins.length) {
+  if (!plugins.length) {
     throw new Error(ERR_MODULE_NOT_INSTALLED);
   }
 
@@ -154,8 +154,8 @@ const setTheme = theme => new Promise(resolve => {
  * @return {String} - The current name of the theme
  */
 const getTheme = () => new Promise(resolve => {
-  const currentTheme = config.get('theme');
-  resolve(currentTheme || '');
+  const currentTheme = config.get('theme') || '';
+  resolve(currentTheme);
 });
 
 /**
