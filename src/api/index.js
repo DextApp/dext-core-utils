@@ -47,7 +47,7 @@ const install = (plugin, outputDir) => new Promise(resolve => {
     // download, install, and update configs
     downloadPackage(plugin, outputDir).then(output => {
       const installProcess = spawn('npm', ['install', '--prefix', output]);
-      installProcess.on('close', (code) => {
+      installProcess.on('close', code => {
         if (!code) {
           plugins.push(plugin);
           config.set('plugins', plugins);
