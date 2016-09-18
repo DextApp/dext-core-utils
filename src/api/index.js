@@ -18,14 +18,16 @@ const config = new Conf();
  * Checks if the plugin/package exists on npm
  *
  * @param {String} plugin - The name of the plugin/package
- * @return {Promise} - Throws an error if the plugin/package doesn't exist
+ * @return {Promise} - True if the plugin is found
  */
 const checkOnNpm = plugin => new Promise(resolve => {
-  npmName(plugin).then(available => {
-    if (available) {
-      throw new Error(ERR_MODULE_NOT_FOUND);
+  npmName(plugin).then(notFound => {
+    // the module exists on npm
+    if (notFound) {
+      resolve(false);
+      return;
     }
-    resolve();
+    resolve(true);
   });
 });
 
@@ -43,7 +45,11 @@ const install = (plugin, outputDir) => new Promise(resolve => {
     throw new Error(ERR_MODULE_INSTALLED);
   }
 
-  checkOnNpm(plugin).then(() => {
+  // if the plugin is found
+  checkOnNpm(plugin).then(found => {
+    if (!found) {
+      throw new Error(ERR_MODULE_NOT_FOUND);
+    }
     // download, install, and update configs
     downloadPackage(plugin, outputDir).then(output => {
       const installProcess = spawn('npm', ['install', '--prefix', output]);
