@@ -10,9 +10,9 @@ const npmName = packageName => new Promise(resolve => {
   process.nextTick(() => {
     if (packageName === 'INVALID') {
       resolve(false);
-    } else {
-      resolve(true);
+      return;
     }
+    resolve(true);
   });
 });
 
