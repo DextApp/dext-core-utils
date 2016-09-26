@@ -1,5 +1,7 @@
 # dext-core-utils
 
+[![Build Status](https://travis-ci.org/vutran/dext-core-utils.svg?branch=master)](https://travis-ci.org/vutran/dext-core-utils) [![Coverage Status](https://coveralls.io/repos/github/vutran/dext-core-utils/badge.svg?branch=develop)](https://coveralls.io/github/vutran/dext-core-utils?branch=develop)
+
 > Utility modules shared between [Dext](https://github.com/vutran/dext) and [Dext Package Manager](https://github.com/vutran/dext-cli).
 
 ## Install
