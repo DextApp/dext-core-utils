@@ -1,14 +1,18 @@
 // Mocks the module "npm-name"
 
 /**
- * Resolves true if the package name is not fould on npm.
+ * Mocks the npm-name package. This checks to see if a package is
+ * avaialble (free package name) on npm.
  *
- * @param {String} packageName - The package name to check
- * @return {Promise} - Resolves false if set as "INVALID"
+ * Resolves true if the package should not exist
+ * Resolves false if the package should exist (set as "SHOULD_EXIST")
+ *
+ * @param {String} plugin - The package name to check
+ * @return {Promise} - Resolve true if the pacakge should not exists
  */
-const npmName = packageName => new Promise(resolve => {
+const npmName = plugin => new Promise((resolve) => {
   process.nextTick(() => {
-    if (packageName === 'INVALID') {
+    if (plugin === 'SHOULD_EXIST') {
       resolve(false);
       return;
     }
