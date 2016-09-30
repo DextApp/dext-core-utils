@@ -3,10 +3,11 @@ const { spawn } = require('child_process');
 const rimraf = require('rimraf');
 const npmName = require('npm-name');
 const {
-  ERR_MODULE_NOT_FOUND,
-  ERR_MODULE_INSTALLED,
-  ERR_MODULE_NOT_INSTALLED,
   ERR_MODULE_DOWNLOAD_ERROR,
+  ERR_MODULE_INSTALLED,
+  ERR_MODULE_NOT_FOUND,
+  ERR_MODULE_NOT_INSTALLED,
+  ERR_MODULE_REMOVE_FAILED,
   ERR_THEME_ALREADY_ACTIVE,
 } = require('../errors');
 const Conf = require('../utils/conf');
@@ -83,7 +84,7 @@ const uninstall = (plugin, srcDir) => new Promise((resolve, reject) => {
   rimraf(pluginDir, (err) => {
     // if there's an error trying to remove the plugin
     if (err) {
-      reject(err);
+      reject(ERR_MODULE_REMOVE_FAILED);
       return;
     }
     plugins.splice(plugins.indexOf(plugin), 1);
