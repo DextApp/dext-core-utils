@@ -21,11 +21,11 @@ const stripPackageDirectory = file => Object.assign({}, file, {
  * @param {String} outputDir - The directory to download the plugin
  * @return {Promise} - The downloaded path
  */
-const downloadPackage = (pkg, outputDir) => new Promise(resolve => {
+const downloadPackage = (pkg, outputDir) => new Promise((resolve) => {
   let body = '';
   // retrieve the package details
-  http.get(getPackageUrl(pkg), res => {
-    res.on('data', chunk => {
+  http.get(getPackageUrl(pkg), (res) => {
+    res.on('data', (chunk) => {
       body += chunk;
     });
     res.on('end', () => {

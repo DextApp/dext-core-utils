@@ -5,7 +5,7 @@ const Conf = class {
   constructor(opts) {
     const o = Object.assign({}, opts);
     o.cwd = '/jest/conf/path';
-    this.store = [];
+    this.store = {};
     this.path = path.resolve(o.cwd);
   }
 

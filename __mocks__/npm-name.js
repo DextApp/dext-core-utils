@@ -1,19 +1,34 @@
-// Mocks the module "npm-name"
+// create a mock error
+let mockAvailable = false;
 
 /**
- * Resolves true if the package name is not fould on npm.
+ * Sets the mock available flag
  *
- * @param {String} packageName - The package name to check
- * @return {Promise} - Resolves false if set as "INVALID"
+ * @param {Boolean} available
  */
-const npmName = packageName => new Promise(resolve => {
+// eslint-disable-next-line no-underscore-dangle
+const __setAvailable = (available) => {
+  mockAvailable = available;
+};
+
+/**
+ * Mocks the npm-name package.
+ *
+ * @param {String} plugin - The package name to check
+ * @return {Promise} - Resolve true if the pacakge should not exist
+ */
+// eslint-disable-next-line no-unused-vars
+const npmName = plugin => new Promise((resolve) => {
   process.nextTick(() => {
-    if (packageName === 'INVALID') {
+    if (mockAvailable) {
       resolve(false);
-      return;
+    } else {
+      resolve(true);
     }
-    resolve(true);
   });
 });
+
+// eslint-disable-next-line no-underscore-dangle
+npmName.__setAvailable = __setAvailable;
 
 module.exports = npmName;

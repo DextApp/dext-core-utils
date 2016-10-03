@@ -1,7 +1,23 @@
 import download from '../../src/utils/download';
 
+jest.mock('http');
+
 describe('download', () => {
   it('should download the package', async () => {
+    const mockResponse = {
+      'dist-tags': {
+        latest: 'v1.0.0',
+      },
+      versions: {
+        'v1.0.0': {
+          dist: {
+            tarball: 'http://foobar.com/download.tar.gz',
+          },
+        },
+      },
+    };
+    // eslint-disable-next-line global-require, no-underscore-dangle
+    require('http').__setMockResponse(JSON.stringify(mockResponse));
     const pkg = 'foobar';
     const outputDir = '/path/to/output';
     expect(await download.downloadPackage(pkg, outputDir)).toEqual('/path/to/output');

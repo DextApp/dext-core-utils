@@ -3,9 +3,11 @@ const { spawn } = require('child_process');
 const rimraf = require('rimraf');
 const npmName = require('npm-name');
 const {
-  ERR_MODULE_NOT_FOUND,
+  ERR_MODULE_DOWNLOAD_ERROR,
   ERR_MODULE_INSTALLED,
+  ERR_MODULE_NOT_FOUND,
   ERR_MODULE_NOT_INSTALLED,
+  ERR_MODULE_REMOVE_FAILED,
   ERR_THEME_ALREADY_ACTIVE,
 } = require('../errors');
 const Conf = require('../utils/conf');
@@ -18,17 +20,10 @@ const config = new Conf();
  * Checks if the plugin/package exists on npm
  *
  * @param {String} plugin - The name of the plugin/package
- * @return {Promise} - True if the plugin is found
+ * @return {Promise} - Resolves true if the plugin is found on npm
  */
-const checkOnNpm = plugin => new Promise(resolve => {
-  npmName(plugin).then(notFound => {
-    // the module exists on npm
-    if (notFound) {
-      resolve(false);
-      return;
-    }
-    resolve(true);
-  });
+const checkOnNpm = plugin => new Promise((resolve) => {
+  npmName(plugin).then(notFound => resolve(!notFound));
 });
 
 /**
@@ -38,27 +33,31 @@ const checkOnNpm = plugin => new Promise(resolve => {
  * @param {String} outputDir - The directory to install the plugin/package
  * @return {Promise}
  */
-const install = (plugin, outputDir) => new Promise(resolve => {
+const install = (plugin, outputDir) => new Promise((resolve, reject) => {
   const plugins = config.get('plugins') || [];
 
   if (plugins.indexOf(plugin) > -1) {
-    throw new Error(ERR_MODULE_INSTALLED);
+    reject(ERR_MODULE_INSTALLED);
+    return;
   }
 
-  // if the plugin is found
-  checkOnNpm(plugin).then(found => {
+  checkOnNpm(plugin).then((found) => {
+    // if the plugin is not found
     if (!found) {
-      throw new Error(ERR_MODULE_NOT_FOUND);
+      reject(ERR_MODULE_NOT_FOUND);
+      return;
     }
     // download, install, and update configs
-    downloadPackage(plugin, outputDir).then(output => {
+    downloadPackage(plugin, outputDir).then((output) => {
       const installProcess = spawn('npm', ['install', '--prefix', output]);
-      installProcess.on('close', code => {
-        if (!code) {
-          plugins.push(plugin);
-          config.set('plugins', plugins);
-          resolve();
+      installProcess.on('close', (code) => {
+        if (code) {
+          reject(ERR_MODULE_DOWNLOAD_ERROR);
+          return;
         }
+        plugins.push(plugin);
+        config.set('plugins', plugins);
+        resolve();
       });
     });
   });
@@ -71,22 +70,22 @@ const install = (plugin, outputDir) => new Promise(resolve => {
  * @param {String} srcDir - The source directory of the plugin/package
  * @return {Promise}
  */
-const uninstall = (plugin, srcDir) => new Promise(resolve => {
+const uninstall = (plugin, srcDir) => new Promise((resolve, reject) => {
   const plugins = config.get('plugins') || [];
 
-  if (!plugins.length) {
-    throw new Error(ERR_MODULE_NOT_INSTALLED);
-  }
-
-  if (plugins.indexOf(plugin) === -1) {
-    throw new Error(ERR_MODULE_NOT_INSTALLED);
+  // plugin is not installed
+  if (!plugins.length || plugins.indexOf(plugin) === -1) {
+    reject(ERR_MODULE_NOT_INSTALLED);
+    return;
   }
 
   // removes the directory
   const pluginDir = srcDir;
-  rimraf(pluginDir, err => {
+  rimraf(pluginDir, (err) => {
+    // if there's an error trying to remove the plugin
     if (err) {
-      throw new Error(err);
+      reject(ERR_MODULE_REMOVE_FAILED);
+      return;
     }
     plugins.splice(plugins.indexOf(plugin), 1);
     config.set('plugins', plugins);
@@ -101,7 +100,7 @@ const uninstall = (plugin, srcDir) => new Promise(resolve => {
  * @param {String} src - The source directory to link
  * @return {Promise} - An object shape with { srcPath, destPath }
  */
-const createSymLink = (plugin, src) => new Promise(resolve => {
+const createSymLink = (plugin, src) => new Promise((resolve) => {
   const dest = getPluginPath(plugin);
   fs.link(src, dest, () => {
     resolve({
@@ -118,7 +117,7 @@ const createSymLink = (plugin, src) => new Promise(resolve => {
  * @param {String} plugin - The name of the plugin/package
  * @return {Promise} - An object shape with { destPath }
  */
-const removeSymLink = plugin => new Promise(resolve => {
+const removeSymLink = plugin => new Promise((resolve) => {
   const dest = getPluginPath(plugin);
   fs.unlink(dest, () => {
     resolve({
@@ -133,20 +132,18 @@ const removeSymLink = plugin => new Promise(resolve => {
  * @param {String} theme - The name of the theme
  * @return {Promise}
  */
-const setTheme = theme => new Promise(resolve => {
+const setTheme = theme => new Promise((resolve, reject) => {
   const currentTheme = config.get('theme');
   const plugins = config.get('plugins') || [];
 
+  // if theme is currently active
   if (currentTheme === theme) {
-    throw new Error(ERR_THEME_ALREADY_ACTIVE);
+    reject(ERR_THEME_ALREADY_ACTIVE);
   }
 
-  if (!plugins.length) {
-    throw new Error(ERR_MODULE_NOT_INSTALLED);
-  }
-
-  if (plugins.indexOf(theme) === -1) {
-    throw new Error(ERR_MODULE_NOT_INSTALLED);
+  // if module is not installed
+  if (!plugins.length || plugins.indexOf(theme) === -1) {
+    reject(ERR_MODULE_NOT_INSTALLED);
   }
 
   config.set('theme', theme);
@@ -159,7 +156,7 @@ const setTheme = theme => new Promise(resolve => {
  *
  * @return {String} - The current name of the theme
  */
-const getTheme = () => new Promise(resolve => {
+const getTheme = () => new Promise((resolve) => {
   const currentTheme = config.get('theme') || '';
   resolve(currentTheme);
 });
@@ -169,7 +166,7 @@ const getTheme = () => new Promise(resolve => {
  *
  * @return {Object} - The current configuration
  */
-const getConfig = () => new Promise(resolve => {
+const getConfig = () => new Promise((resolve) => {
   resolve(config.store);
 });
 
