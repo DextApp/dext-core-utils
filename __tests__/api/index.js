@@ -70,7 +70,7 @@ describe('plugins', () => {
     // eslint-disable-next-line global-require, no-underscore-dangle
     require('child_process').__setCode(null);
     await api.install('SHOULD_EXIST', '/jest/test');
-    expect((await api.getConfig()).plugins).toEqual(['SHOULD_EXIST']);
+    expect(await api.getPlugins()).toEqual(['SHOULD_EXIST']);
   });
 
   it('should install a plugin that is already installed', async () => {
@@ -105,7 +105,7 @@ describe('plugins', () => {
     // eslint-disable-next-line global-require, no-underscore-dangle
     require('rimraf').__setError(false);
     await api.uninstall('SHOULD_EXIST', '/jest/test');
-    expect((await api.getConfig()).plugins).toEqual([]);
+    expect(await api.getPlugins()).toEqual([]);
   });
 
   it('should uninstall a plugin that doesn\'t exist', async () => {

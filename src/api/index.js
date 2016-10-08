@@ -11,6 +11,7 @@ const {
   ERR_THEME_ALREADY_ACTIVE,
 } = require('../errors');
 const Conf = require('../utils/conf');
+const plugins = require('./plugins');
 const { downloadPackage } = require('../utils/download');
 const { getPluginPath } = require('../utils/paths');
 
@@ -34,9 +35,7 @@ const checkOnNpm = plugin => new Promise((resolve) => {
  * @return {Promise}
  */
 const install = (plugin, outputDir) => new Promise((resolve, reject) => {
-  const plugins = config.get('plugins') || [];
-
-  if (plugins.indexOf(plugin) > -1) {
+  if (plugins.isInstalled(plugin)) {
     reject(ERR_MODULE_INSTALLED);
     return;
   }
@@ -55,8 +54,8 @@ const install = (plugin, outputDir) => new Promise((resolve, reject) => {
           reject(ERR_MODULE_DOWNLOAD_ERROR);
           return;
         }
-        plugins.push(plugin);
-        config.set('plugins', plugins);
+        // add the plugin
+        plugins.add(plugin);
         resolve();
       });
     });
@@ -71,10 +70,7 @@ const install = (plugin, outputDir) => new Promise((resolve, reject) => {
  * @return {Promise}
  */
 const uninstall = (plugin, srcDir) => new Promise((resolve, reject) => {
-  const plugins = config.get('plugins') || [];
-
-  // plugin is not installed
-  if (!plugins.length || plugins.indexOf(plugin) === -1) {
+  if (!plugins.isInstalled(plugin)) {
     reject(ERR_MODULE_NOT_INSTALLED);
     return;
   }
@@ -87,8 +83,8 @@ const uninstall = (plugin, srcDir) => new Promise((resolve, reject) => {
       reject(ERR_MODULE_REMOVE_FAILED);
       return;
     }
-    plugins.splice(plugins.indexOf(plugin), 1);
-    config.set('plugins', plugins);
+    // remove plugin
+    plugins.remove(plugin);
     resolve();
   });
 });
@@ -103,6 +99,7 @@ const uninstall = (plugin, srcDir) => new Promise((resolve, reject) => {
 const createSymLink = (plugin, src) => new Promise((resolve) => {
   const dest = getPluginPath(plugin);
   fs.link(src, dest, () => {
+    // TODO: add to config
     resolve({
       srcPath: src,
       destPath: dest,
@@ -120,6 +117,7 @@ const createSymLink = (plugin, src) => new Promise((resolve) => {
 const removeSymLink = plugin => new Promise((resolve) => {
   const dest = getPluginPath(plugin);
   fs.unlink(dest, () => {
+    // TODO: remove from config
     resolve({
       destPath: dest,
     });
@@ -134,15 +132,14 @@ const removeSymLink = plugin => new Promise((resolve) => {
  */
 const setTheme = theme => new Promise((resolve, reject) => {
   const currentTheme = config.get('theme');
-  const plugins = config.get('plugins') || [];
 
   // if theme is currently active
   if (currentTheme === theme) {
     reject(ERR_THEME_ALREADY_ACTIVE);
   }
 
-  // if module is not installed
-  if (!plugins.length || plugins.indexOf(theme) === -1) {
+  // if theme plugin is not installed
+  if (!plugins.isInstalled(theme)) {
     reject(ERR_MODULE_NOT_INSTALLED);
   }
 
@@ -170,6 +167,13 @@ const getConfig = () => new Promise((resolve) => {
   resolve(config.store);
 });
 
+/**
+ * Get all plugins
+ *
+ * @return {String[]} - An array of plugin names
+ */
+const getPlugins = () => plugins.getAll();
+
 module.exports = {
   checkOnNpm,
   install,
@@ -179,4 +183,5 @@ module.exports = {
   setTheme,
   getTheme,
   getConfig,
+  getPlugins,
 };
