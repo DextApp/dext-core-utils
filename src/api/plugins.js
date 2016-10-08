@@ -14,22 +14,22 @@ const getAll = () => config.get('plugins') || [];
 const isInstalled = plugin => getAll().indexOf(plugin) > -1;
 
 /**
- * Adds the plugin to the config
+ * Enables the plugin by adding it to the config
  *
  * @param {String} plugin - The plugin name
  */
-const add = (plugin) => {
+const enable = (plugin) => {
   const plugins = getAll();
   plugins.push(plugin);
   config.set('plugins', plugins);
 };
 
 /**
- * Removes the plugin from the config
+ * Disables the plugin by removing it from the config
  *
  * @param {String} plugin - The plugin name
  */
-const remove = (plugin) => {
+const disable = (plugin) => {
   const plugins = getAll();
   plugins.splice(plugins.indexOf(plugin), 1);
   config.set('plugins', plugins);
@@ -38,6 +38,6 @@ const remove = (plugin) => {
 module.exports = {
   getAll,
   isInstalled,
-  add,
-  remove,
+  enable,
+  disable,
 };

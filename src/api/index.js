@@ -54,8 +54,8 @@ const install = (plugin, outputDir) => new Promise((resolve, reject) => {
           reject(ERR_MODULE_DOWNLOAD_ERROR);
           return;
         }
-        // add the plugin
-        plugins.add(plugin);
+        // enable the plugin
+        plugins.enable(plugin);
         resolve();
       });
     });
@@ -83,8 +83,8 @@ const uninstall = (plugin, srcDir) => new Promise((resolve, reject) => {
       reject(ERR_MODULE_REMOVE_FAILED);
       return;
     }
-    // remove plugin
-    plugins.remove(plugin);
+    // disable the plugin
+    plugins.disable(plugin);
     resolve();
   });
 });
