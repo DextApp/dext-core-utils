@@ -167,13 +167,6 @@ const getConfig = () => new Promise((resolve) => {
   resolve(config.store);
 });
 
-/**
- * Get all plugins
- *
- * @return {String[]} - An array of plugin names
- */
-const getPlugins = () => plugins.getAll();
-
 module.exports = {
   checkOnNpm,
   install,
@@ -183,5 +176,5 @@ module.exports = {
   setTheme,
   getTheme,
   getConfig,
-  getPlugins,
+  plugins,
 };
