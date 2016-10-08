@@ -2,9 +2,9 @@ import api from '../../src/api';
 import utils from '../../src/utils';
 import {
   ERR_MODULE_DOWNLOAD_ERROR,
-  ERR_MODULE_INSTALLED,
+  ERR_MODULE_ENABLED,
   ERR_MODULE_NOT_FOUND,
-  ERR_MODULE_NOT_INSTALLED,
+  ERR_MODULE_NOT_ENABLED,
   ERR_MODULE_REMOVE_FAILED,
   ERR_THEME_ALREADY_ACTIVE,
 } from '../../src/errors';
@@ -77,7 +77,7 @@ describe('plugins', () => {
     try {
       await api.install('SHOULD_EXIST', '/jest/test');
     } catch (err) {
-      expect(err).toBe(ERR_MODULE_INSTALLED);
+      expect(err).toBe(ERR_MODULE_ENABLED);
     }
   });
 
@@ -114,7 +114,7 @@ describe('plugins', () => {
     try {
       await api.uninstall('INVALID_MODULE', '/jest/test');
     } catch (err) {
-      expect(err).toBe(ERR_MODULE_NOT_INSTALLED);
+      expect(err).toBe(ERR_MODULE_NOT_ENABLED);
     }
   });
 });
@@ -142,7 +142,7 @@ describe('themes', () => {
     try {
       await api.setTheme('foobar');
     } catch (err) {
-      expect(err).toBe(ERR_MODULE_NOT_INSTALLED);
+      expect(err).toBe(ERR_MODULE_NOT_ENABLED);
     }
   });
 

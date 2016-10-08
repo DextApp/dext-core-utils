@@ -6,12 +6,12 @@ const config = new Conf();
 const getAll = () => config.get('plugins') || [];
 
 /**
- * Checks if the plugin is already installed
+ * Checks if the plugin is already enabled
  *
  * @param {String} plugin - The plugin name
  * @return {Boolean}
  */
-const isInstalled = plugin => getAll().indexOf(plugin) > -1;
+const isEnabled = plugin => getAll().indexOf(plugin) > -1;
 
 /**
  * Enables the plugin by adding it to the config
@@ -37,7 +37,7 @@ const disable = (plugin) => {
 
 module.exports = {
   getAll,
-  isInstalled,
+  isEnabled,
   enable,
   disable,
 };

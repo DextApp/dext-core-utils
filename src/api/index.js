@@ -4,9 +4,9 @@ const rimraf = require('rimraf');
 const npmName = require('npm-name');
 const {
   ERR_MODULE_DOWNLOAD_ERROR,
-  ERR_MODULE_INSTALLED,
+  ERR_MODULE_ENABLED,
   ERR_MODULE_NOT_FOUND,
-  ERR_MODULE_NOT_INSTALLED,
+  ERR_MODULE_NOT_ENABLED,
   ERR_MODULE_REMOVE_FAILED,
   ERR_THEME_ALREADY_ACTIVE,
 } = require('../errors');
@@ -28,15 +28,15 @@ const checkOnNpm = plugin => new Promise((resolve) => {
 });
 
 /**
- * Installs a plugin/package and saves it to the given directory
+ * Installs and enabled a plugin/package and saves it to the given directory
  *
  * @param {String} plugin - The name of the plugin/package
  * @param {String} outputDir - The directory to install the plugin/package
  * @return {Promise}
  */
 const install = (plugin, outputDir) => new Promise((resolve, reject) => {
-  if (plugins.isInstalled(plugin)) {
-    reject(ERR_MODULE_INSTALLED);
+  if (plugins.isEnabled(plugin)) {
+    reject(ERR_MODULE_ENABLED);
     return;
   }
 
@@ -70,8 +70,8 @@ const install = (plugin, outputDir) => new Promise((resolve, reject) => {
  * @return {Promise}
  */
 const uninstall = (plugin, srcDir) => new Promise((resolve, reject) => {
-  if (!plugins.isInstalled(plugin)) {
-    reject(ERR_MODULE_NOT_INSTALLED);
+  if (!plugins.isEnabled(plugin)) {
+    reject(ERR_MODULE_NOT_ENABLED);
     return;
   }
 
@@ -138,9 +138,9 @@ const setTheme = theme => new Promise((resolve, reject) => {
     reject(ERR_THEME_ALREADY_ACTIVE);
   }
 
-  // if theme plugin is not installed
-  if (!plugins.isInstalled(theme)) {
-    reject(ERR_MODULE_NOT_INSTALLED);
+  // if theme plugin is not enabled
+  if (!plugins.isEnabled(theme)) {
+    reject(ERR_MODULE_NOT_ENABLED);
   }
 
   config.set('theme', theme);
