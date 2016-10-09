@@ -4,7 +4,7 @@ import {
   ERR_MODULE_DOWNLOAD_ERROR,
   ERR_MODULE_ENABLED,
   ERR_MODULE_NOT_FOUND,
-  ERR_MODULE_NOT_ENABLED,
+  ERR_MODULE_DISABLED,
   ERR_MODULE_REMOVE_FAILED,
   ERR_THEME_ALREADY_ACTIVE,
 } from '../../src/errors';
@@ -114,7 +114,7 @@ describe('plugins', () => {
     try {
       await api.uninstall('INVALID_MODULE', '/jest/test');
     } catch (err) {
-      expect(err).toBe(ERR_MODULE_NOT_ENABLED);
+      expect(err).toBe(ERR_MODULE_DISABLED);
     }
   });
 });
@@ -144,7 +144,7 @@ describe('themes', () => {
     try {
       await api.setTheme('foobar');
     } catch (err) {
-      expect(err).toBe(ERR_MODULE_NOT_ENABLED);
+      expect(err).toBe(ERR_MODULE_DISABLED);
     }
   });
 

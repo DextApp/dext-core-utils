@@ -11,7 +11,8 @@ const getAll = () => config.get('plugins') || [];
  * @param {String} plugin - The plugin name
  * @return {Boolean}
  */
-const isEnabled = plugin => getAll().indexOf(plugin) > -1;
+// eslint-disable-next-line no-bitwise
+const isEnabled = plugin => ~getAll().indexOf(plugin);
 
 /**
  * Enables the plugin by adding it to the config

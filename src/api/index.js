@@ -6,7 +6,7 @@ const {
   ERR_MODULE_DOWNLOAD_ERROR,
   ERR_MODULE_ENABLED,
   ERR_MODULE_NOT_FOUND,
-  ERR_MODULE_NOT_ENABLED,
+  ERR_MODULE_DISABLED,
   ERR_MODULE_REMOVE_FAILED,
   ERR_THEME_ALREADY_ACTIVE,
 } = require('../errors');
@@ -71,7 +71,7 @@ const install = (plugin, outputDir) => new Promise((resolve, reject) => {
  */
 const uninstall = (plugin, srcDir) => new Promise((resolve, reject) => {
   if (!plugins.isEnabled(plugin)) {
-    reject(ERR_MODULE_NOT_ENABLED);
+    reject(ERR_MODULE_DISABLED);
     return;
   }
 
@@ -138,9 +138,9 @@ const setTheme = theme => new Promise((resolve, reject) => {
     reject(ERR_THEME_ALREADY_ACTIVE);
   }
 
-  // if theme plugin is not enabled
+  // if theme plugin is disabled
   if (!plugins.isEnabled(theme)) {
-    reject(ERR_MODULE_NOT_ENABLED);
+    reject(ERR_MODULE_DISABLED);
   }
 
   config.set('theme', theme);
