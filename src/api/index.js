@@ -99,7 +99,7 @@ const uninstall = (plugin, srcDir) => new Promise((resolve, reject) => {
 const createSymLink = (plugin, src) => new Promise((resolve) => {
   const dest = getPluginPath(plugin);
   fs.link(src, dest, () => {
-    // TODO: add to config
+    plugins.enable(plugin);
     resolve({
       srcPath: src,
       destPath: dest,
@@ -117,7 +117,7 @@ const createSymLink = (plugin, src) => new Promise((resolve) => {
 const removeSymLink = plugin => new Promise((resolve) => {
   const dest = getPluginPath(plugin);
   fs.unlink(dest, () => {
-    // TODO: remove from config
+    plugins.disable(plugin);
     resolve({
       destPath: dest,
     });
