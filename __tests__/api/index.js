@@ -2,9 +2,9 @@ import api from '../../src/api';
 import utils from '../../src/utils';
 import {
   ERR_MODULE_DOWNLOAD_ERROR,
-  ERR_MODULE_INSTALLED,
+  ERR_MODULE_ENABLED,
   ERR_MODULE_NOT_FOUND,
-  ERR_MODULE_NOT_INSTALLED,
+  ERR_MODULE_DISABLED,
   ERR_MODULE_REMOVE_FAILED,
   ERR_THEME_ALREADY_ACTIVE,
 } from '../../src/errors';
@@ -70,14 +70,14 @@ describe('plugins', () => {
     // eslint-disable-next-line global-require, no-underscore-dangle
     require('child_process').__setCode(null);
     await api.install('SHOULD_EXIST', '/jest/test');
-    expect((await api.getConfig()).plugins).toEqual(['SHOULD_EXIST']);
+    expect(await api.plugins.getAll()).toContain('SHOULD_EXIST');
   });
 
   it('should install a plugin that is already installed', async () => {
     try {
       await api.install('SHOULD_EXIST', '/jest/test');
     } catch (err) {
-      expect(err).toBe(ERR_MODULE_INSTALLED);
+      expect(err).toBe(ERR_MODULE_ENABLED);
     }
   });
 
@@ -105,7 +105,7 @@ describe('plugins', () => {
     // eslint-disable-next-line global-require, no-underscore-dangle
     require('rimraf').__setError(false);
     await api.uninstall('SHOULD_EXIST', '/jest/test');
-    expect((await api.getConfig()).plugins).toEqual([]);
+    expect(await api.plugins.getAll()).not.toContain('SHOULD_EXIST');
   });
 
   it('should uninstall a plugin that doesn\'t exist', async () => {
@@ -114,7 +114,7 @@ describe('plugins', () => {
     try {
       await api.uninstall('INVALID_MODULE', '/jest/test');
     } catch (err) {
-      expect(err).toBe(ERR_MODULE_NOT_INSTALLED);
+      expect(err).toBe(ERR_MODULE_DISABLED);
     }
   });
 });
@@ -127,6 +127,7 @@ describe('symbolic links', () => {
       srcPath: '/jest/test',
       destPath: utils.paths.getPluginPath(plugin),
     });
+    expect(await api.plugins.getAll()).toContain('foobar-plugin');
   });
 
   it('should remove a symbolic link', async () => {
@@ -134,6 +135,7 @@ describe('symbolic links', () => {
     expect(await api.removeSymLink(plugin)).toEqual({
       destPath: utils.paths.getPluginPath(plugin),
     });
+    expect(await api.plugins.getAll()).not.toContain('foobar-plugin');
   });
 });
 
@@ -142,7 +144,7 @@ describe('themes', () => {
     try {
       await api.setTheme('foobar');
     } catch (err) {
-      expect(err).toBe(ERR_MODULE_NOT_INSTALLED);
+      expect(err).toBe(ERR_MODULE_DISABLED);
     }
   });
 
