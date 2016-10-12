@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { spawn } = require('child_process');
+const spawn = require('cross-spawn');
 const rimraf = require('rimraf');
 const npmName = require('npm-name');
 const {
