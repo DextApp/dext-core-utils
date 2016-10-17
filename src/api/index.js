@@ -2,6 +2,7 @@ const fs = require('fs');
 const spawn = require('cross-spawn');
 const rimraf = require('rimraf');
 const npmName = require('npm-name');
+const npmKeyword = require('npm-keyword');
 const {
   ERR_MODULE_DOWNLOAD_ERROR,
   ERR_MODULE_ENABLED,
@@ -16,6 +17,23 @@ const { downloadPackage } = require('../utils/download');
 const { getPluginPath } = require('../utils/paths');
 
 const config = new Conf();
+
+/**
+  * Lists plugins & themes with the keyword 'dext-plugin' or 'dext-theme' on npm
+  *
+  * @param {String} plugin - The name of the plugin/theme
+  * @return {String} - An array with packages matching the search
+  */
+const search = (searchTerm) => new Promise((resolve, reject) => {
+  let resultText = '';
+  npmKeyword(searchTerm).then(packages => {
+     // Loop over all found packages to return a list
+     packages.forEach(function (pkg) {
+       resultText += ' - ' + pkg.name + ': ' + pkg.description + "\n";
+     });
+     resolve(resultText);
+  });
+});
 
 /**
  * Checks if the plugin/package exists on npm
@@ -173,6 +191,7 @@ module.exports = {
   uninstall,
   createSymLink,
   removeSymLink,
+  search,
   setTheme,
   getTheme,
   getConfig,
