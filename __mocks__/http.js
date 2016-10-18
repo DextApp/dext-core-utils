@@ -12,7 +12,6 @@ let mockData = null;
  *
  * @param {String} data
  */
-// eslint-disable-next-line no-underscore-dangle
 const __setMockResponse = (data) => {
   mockData = data;
 };
@@ -30,7 +29,6 @@ const get = (url, callback) => {
   callback.call(null, mockResponse);
 };
 
-// eslint-disable-next-line no-underscore-dangle
 http.__setMockResponse = __setMockResponse;
 http.get = get;
 

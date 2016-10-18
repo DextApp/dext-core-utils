@@ -12,7 +12,6 @@ let mockCode = null;
  *
  * @param {String} code
  */
-// eslint-disable-next-line no-underscore-dangle
 const __setCode = (code) => {
   mockCode = code;
 };
@@ -30,7 +29,6 @@ const spawn = (command, args) => {
   return mockProcess;
 };
 
-// eslint-disable-next-line no-underscore-dangle
 cp.__setCode = __setCode;
 cp.spawn = spawn;
 

@@ -1,5 +1,6 @@
 const fs = jest.genMockFromModule('fs');
 
+// Mocks fs.link
 fs.link = (src, dest, callback) => {
   callback.call(null);
 };
