@@ -1,5 +1,10 @@
 {
   "env": {
     "jest": true
+  },
+  "rules": {
+    "global-require": 0,
+    "import/newline-after-import": 0,
+    "no-underscore-dangle": 0
   }
 }

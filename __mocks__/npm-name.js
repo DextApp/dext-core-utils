@@ -6,7 +6,6 @@ let mockAvailable = false;
  *
  * @param {Boolean} available
  */
-// eslint-disable-next-line no-underscore-dangle
 const __setAvailable = (available) => {
   mockAvailable = available;
 };
@@ -28,7 +27,6 @@ const npmName = plugin => new Promise((resolve) => {
   });
 });
 
-// eslint-disable-next-line no-underscore-dangle
 npmName.__setAvailable = __setAvailable;
 
 module.exports = npmName;

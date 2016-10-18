@@ -16,7 +16,6 @@ describe('download', () => {
         },
       },
     };
-    // eslint-disable-next-line global-require, no-underscore-dangle
     require('http').__setMockResponse(JSON.stringify(mockResponse));
     const pkg = 'foobar';
     const outputDir = '/path/to/output';

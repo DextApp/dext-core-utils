@@ -1,10 +1,12 @@
 // Mocks the module "conf"
 const path = require('path');
 
+let cwdMock = '';
+
 const Conf = class {
   constructor(opts) {
     const o = Object.assign({}, opts);
-    o.cwd = '/jest/conf/path';
+    o.cwd = cwdMock;
     this.store = {};
     this.path = path.resolve(o.cwd);
   }
@@ -16,6 +18,10 @@ const Conf = class {
   set(key, value) {
     this.store[key] = value;
   }
+};
+
+Conf.__setCwd = (cwd) => {
+  cwdMock = cwd;
 };
 
 module.exports = Conf;

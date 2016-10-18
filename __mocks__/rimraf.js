@@ -7,7 +7,6 @@ let mockError = null;
  *
  * @param {String} data
  */
-// eslint-disable-next-line no-underscore-dangle
 const __setError = (error) => {
   mockError = error;
 };
@@ -22,7 +21,6 @@ const rimraf = (dir, callback) => {
   callback.call(null, mockError);
 };
 
-// eslint-disable-next-line no-underscore-dangle
 rimraf.__setError = __setError;
 
 module.exports = rimraf;

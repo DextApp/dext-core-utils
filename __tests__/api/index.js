@@ -25,13 +25,11 @@ describe('general api', () => {
 
 describe('validate', () => {
   it('should check for a valid plugin', async () => {
-    // eslint-disable-next-line global-require, no-underscore-dangle
     require('npm-name').__setAvailable(false);
     expect(await api.checkOnNpm('SHOULD_NOT_EXIST')).toBeFalsy();
   });
 
   it('should check for an invalid plugin', async () => {
-    // eslint-disable-next-line global-require, no-underscore-dangle
     require('npm-name').__setAvailable(true);
     expect(await api.checkOnNpm('SHOULD_EXIST')).toBeTruthy();
   });
@@ -51,13 +49,10 @@ describe('plugins', () => {
     },
   };
 
-  // eslint-disable-next-line global-require, no-underscore-dangle
   require('http').__setMockResponse(JSON.stringify(mockResponse));
-  // eslint-disable-next-line global-require, no-underscore-dangle
   require('npm-name').__setAvailable(true);
 
   it('should fail to install a plugin on download', async () => {
-    // eslint-disable-next-line global-require, no-underscore-dangle
     require('child_process').__setCode(true);
     try {
       await api.install('SHOULD_EXIST', '/jest/test');
@@ -67,7 +62,6 @@ describe('plugins', () => {
   });
 
   it('should install a plugin', async () => {
-    // eslint-disable-next-line global-require, no-underscore-dangle
     require('child_process').__setCode(null);
     await api.install('SHOULD_EXIST', '/jest/test');
     expect(await api.plugins.getAll()).toContain('SHOULD_EXIST');
@@ -82,7 +76,6 @@ describe('plugins', () => {
   });
 
   it('should install a plugin that doesn\'t exist', async () => {
-    // eslint-disable-next-line global-require, no-underscore-dangle
     require('npm-name').__setAvailable(false);
     try {
       await api.install('SHOULD_NOT_EXIST', '/jest/test');
@@ -92,7 +85,6 @@ describe('plugins', () => {
   });
 
   it('should fail to uninstall a plugin', async () => {
-    // eslint-disable-next-line global-require, no-underscore-dangle
     require('rimraf').__setError(true);
     try {
       await api.uninstall('SHOULD_EXIST', '/jest/test');
@@ -102,14 +94,12 @@ describe('plugins', () => {
   });
 
   it('should uninstall a plugin', async () => {
-    // eslint-disable-next-line global-require, no-underscore-dangle
     require('rimraf').__setError(false);
     await api.uninstall('SHOULD_EXIST', '/jest/test');
     expect(await api.plugins.getAll()).not.toContain('SHOULD_EXIST');
   });
 
   it('should uninstall a plugin that doesn\'t exist', async () => {
-    // eslint-disable-next-line global-require, no-underscore-dangle
     require('npm-name').__setAvailable(false);
     try {
       await api.uninstall('INVALID_MODULE', '/jest/test');
