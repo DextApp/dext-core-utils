@@ -2,7 +2,6 @@ const fs = require('fs');
 const spawn = require('cross-spawn');
 const rimraf = require('rimraf');
 const npmName = require('npm-name');
-const npmKeyword = require('npm-keyword');
 const {
   ERR_MODULE_DOWNLOAD_ERROR,
   ERR_MODULE_ENABLED,
@@ -15,6 +14,7 @@ const Conf = require('../utils/conf');
 const plugins = require('./plugins');
 const { downloadPackage } = require('../utils/download');
 const { getPluginPath } = require('../utils/paths');
+const { searchPackages } = require('../utils/search');
 
 const config = new Conf();
 
@@ -25,13 +25,10 @@ const config = new Conf();
   * @return {String} - An array with packages matching the search
   */
 const search = (searchTerm) => new Promise((resolve, reject) => {
-  let resultText = '';
-  npmKeyword(searchTerm).then(packages => {
-     // Loop over all found packages to return a list
-     packages.forEach(function (pkg) {
-       resultText += ' - ' + pkg.name + ': ' + pkg.description + "\n";
-     });
-     resolve(resultText);
+  searchPackages(searchTerm).then(packages => {
+    // Loop over all found packages to return a list
+    const results = packages.map(pkg => pkg.name[0]);
+     resolve(results);
   });
 });
 
