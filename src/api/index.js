@@ -8,6 +8,7 @@ const {
   ERR_MODULE_NOT_FOUND,
   ERR_MODULE_DISABLED,
   ERR_MODULE_REMOVE_FAILED,
+  ERR_MODULE_SEARCH_FAILED,
   ERR_THEME_ALREADY_ACTIVE,
 } = require('../errors');
 const Conf = require('../utils/conf');
@@ -22,13 +23,17 @@ const config = new Conf();
   * Lists plugins & themes with the keyword 'dext-plugin' or 'dext-theme' on npm
   *
   * @param {String} plugin - The name of the plugin/theme
-  * @return {String} - An array with packages matching the search
+  * @return {Promise} - Resolves the search results as an array
   */
 const search = (searchTerm) => new Promise((resolve, reject) => {
   searchPackages(searchTerm).then(packages => {
-    // Loop over all found packages to return a list
-    const results = packages.map(pkg => pkg.name[0]);
-     resolve(results);
+    if(Array.isArray(packages)) {
+      // Loop over all found packages to return a list
+      const results = packages.map(pkg => pkg.name[0]);
+      resolve(results);
+    } else {
+      reject(ERR_MODULE_SEARCH_FAILED);
+    }
   });
 });
 
