@@ -23,17 +23,16 @@ const config = new Conf();
   * Lists plugins & themes with the keyword 'dext-plugin' or 'dext-theme' on npm
   *
   * @param {String} plugin - The name of the plugin/theme
-  * @return {Promise} - Resolves the search results as an array
+  * @return {Promise} - Resolves the search results
   */
 const search = searchTerm => new Promise((resolve, reject) => {
   searchPackages(searchTerm).then((packages) => {
-    if (Array.isArray(packages)) {
-      // Loop over all found packages to return a list
-      const results = packages.map(pkg => pkg.name[0]);
-      resolve(results);
-    } else {
+    if (!Array.isArray(packages) || !packages.length) {
       reject(ERR_MODULE_SEARCH_FAILED);
+      return;
     }
+
+    resolve(packages);
   });
 });
 

@@ -26,6 +26,10 @@ const searchPackages = q => new Promise((resolve) => {
     });
     res.on('end', () => {
       const results = JSON.parse(body);
+      if (!results.results) {
+        resolve([]);
+        return;
+      }
       const resultsFlat = results.results.map(c => ({
         name: c.name[0],
         desc: c.description ? c.description[0] : '',

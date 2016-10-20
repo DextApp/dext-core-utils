@@ -6,6 +6,7 @@ import {
   ERR_MODULE_NOT_FOUND,
   ERR_MODULE_DISABLED,
   ERR_MODULE_REMOVE_FAILED,
+  ERR_MODULE_SEARCH_FAILED,
   ERR_THEME_ALREADY_ACTIVE,
 } from '../../src/errors';
 
@@ -149,6 +150,45 @@ describe('themes', () => {
       expect(err).toBe(ERR_THEME_ALREADY_ACTIVE);
       // current theme is retained
       expect(await api.getTheme()).toBe('foobar');
+    }
+  });
+});
+
+describe('search', () => {
+  it('should return some search results', async () => {
+    const mockHttpResponse = {
+      results: [
+        {
+          name: ['foobar-default-theme'],
+          description: ['Foobar default theme'],
+        },
+        {
+          name: ['foobar-default-plugin'],
+          description: ['Foobar default plugin'],
+        },
+      ],
+    };
+    require('http').__setMockResponse(JSON.stringify(mockHttpResponse));
+    expect(await api.search('foobar')).toContainEqual({
+      name: 'foobar-default-theme',
+      desc: 'Foobar default theme',
+    });
+
+    expect(await api.search('foobar')).not.toContainEqual({
+      name: 'invalid-default-theme',
+      desc: 'Invalid default theme',
+    });
+  });
+
+  it('should fail to receive search results', async () => {
+    const mockHttpResponse = {
+      results: null,
+    };
+    require('http').__setMockResponse(JSON.stringify(mockHttpResponse));
+    try {
+      await api.search('foobar');
+    } catch (err) {
+      expect(err).toBe(ERR_MODULE_SEARCH_FAILED);
     }
   });
 });
