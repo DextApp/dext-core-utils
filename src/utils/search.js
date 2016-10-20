@@ -1,6 +1,6 @@
 const http = require('http');
 
-const getSearchUrl = pkg => `http://npmsearch.com/query\?q\=${pkg}%20AND%20\(keywords:dext-theme%20OR%20keywords:dext-plugin\)\&fields\=name`;
+const getSearchUrl = pkg => `http://npmsearch.com/query?q=${pkg}%20AND%20(keywords:dext-theme%20OR%20keywords:dext-plugin)&fields=name`;
 
 /**
  * Searches for package marked with the keywords 'dext-plugin' or 'dext-theme'
@@ -8,7 +8,7 @@ const getSearchUrl = pkg => `http://npmsearch.com/query\?q\=${pkg}%20AND%20\(key
  * @param {String} pkg - The name of the npm package
  * @return {Promise} - The search results
  */
-const searchPackages = (pkg) => new Promise((resolve) => {
+const searchPackages = pkg => new Promise((resolve) => {
   let body = '';
   // Retrieve the search results
   return http.get(getSearchUrl(pkg), (res) => {
@@ -25,5 +25,5 @@ const searchPackages = (pkg) => new Promise((resolve) => {
 
 module.exports = {
   getSearchUrl,
-  searchPackages
+  searchPackages,
 };

@@ -25,9 +25,9 @@ const config = new Conf();
   * @param {String} plugin - The name of the plugin/theme
   * @return {Promise} - Resolves the search results as an array
   */
-const search = (searchTerm) => new Promise((resolve, reject) => {
-  searchPackages(searchTerm).then(packages => {
-    if(Array.isArray(packages)) {
+const search = searchTerm => new Promise((resolve, reject) => {
+  searchPackages(searchTerm).then((packages) => {
+    if (Array.isArray(packages)) {
       // Loop over all found packages to return a list
       const results = packages.map(pkg => pkg.name[0]);
       resolve(results);
