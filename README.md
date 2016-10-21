@@ -6,9 +6,26 @@
 
 ## Install
 
+With `npm`:
+
 ```bash
 $ npm install --save dext-core-utils
 ```
+
+With `yarn`:
+
+```bash
+$ yarn add dext-core-utils
+```
+
+## Contributing
+
+♥ ***Dext*** and want to contribute? I am seeking contributors of any levels to help grow the application. You can help contribute to the growth of this application in many ways.
+
+- [Bug Reports](CONTRIBUTING.md#bug-reports)
+- [Feature Requests](CONTRIBUTING.md#feature-requests)
+- [Pull Requests](CONTRIBUTING.md#pull-requests)
+- [Feedback and Suggestions](CONTRIBUTING.md#feedback-and-suggestions)
 
 ## Related
 
