@@ -7,5 +7,5 @@ module.exports = {
   conf,
   download,
   paths,
-  search
+  search,
 };
