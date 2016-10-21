@@ -6,13 +6,13 @@
 
 ## Install
 
-With `npm`:
+**With `npm`:**
 
 ```bash
 $ npm install --save dext-core-utils
 ```
 
-With `yarn`:
+**With `yarn`:**
 
 ```bash
 $ yarn add dext-core-utils
