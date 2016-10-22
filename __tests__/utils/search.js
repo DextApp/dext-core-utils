@@ -1,6 +1,6 @@
 import search from '../../src/utils/search';
 
-jest.mock('http');
+jest.mock('https');
 
 describe('search', () => {
   it('should seach for packages', async () => {
@@ -16,7 +16,7 @@ describe('search', () => {
         },
       ],
     };
-    require('http').__setMockResponse(JSON.stringify(mockHttpResponse));
+    require('https').__setMockResponse(JSON.stringify(mockHttpResponse));
 
     const q = 'foobar';
     const mockResponse = [
