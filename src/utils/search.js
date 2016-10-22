@@ -1,4 +1,4 @@
-const http = require('http');
+const https = require('https');
 
 /**
  * Retrieves the API url
@@ -20,7 +20,7 @@ const searchPackages = q => new Promise((resolve) => {
   let body = '';
   const endpoint = getSearchUrl(q);
   // Retrieve the search results
-  return http.get(endpoint, (res) => {
+  return https.get(endpoint, (res) => {
     res.on('data', (chunk) => {
       body += chunk;
     });

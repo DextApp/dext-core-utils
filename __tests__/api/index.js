@@ -15,6 +15,7 @@ jest.mock('conf');
 jest.mock('download');
 jest.mock('fs');
 jest.mock('http');
+jest.mock('https');
 jest.mock('npm-name');
 jest.mock('rimraf');
 
@@ -168,7 +169,7 @@ describe('search', () => {
         },
       ],
     };
-    require('http').__setMockResponse(JSON.stringify(mockHttpResponse));
+    require('https').__setMockResponse(JSON.stringify(mockHttpResponse));
     expect(await api.search('foobar')).toContainEqual({
       name: 'foobar-default-theme',
       desc: 'Foobar default theme',
@@ -184,7 +185,7 @@ describe('search', () => {
     const mockHttpResponse = {
       results: null,
     };
-    require('http').__setMockResponse(JSON.stringify(mockHttpResponse));
+    require('https').__setMockResponse(JSON.stringify(mockHttpResponse));
     try {
       await api.search('foobar');
     } catch (err) {
