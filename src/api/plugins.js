@@ -1,4 +1,7 @@
+const path = require('path');
+const fs = require('fs');
 const Conf = require('../utils/conf');
+const { PLUGIN_PATH } = require('../utils/paths');
 
 // initialize a new config file
 const config = new Conf();
@@ -13,6 +16,14 @@ const getAll = () => config.get('plugins') || [];
  */
 // eslint-disable-next-line no-bitwise
 const isEnabled = plugin => ~getAll().indexOf(plugin);
+
+/**
+ * Checks if the plugin is installed
+ *
+ * @param {String} plugin - The plugin name
+ * @return {Boolean}
+ */
+const isInstalled = plugin => fs.existsSync(path.resolve(PLUGIN_PATH, plugin));
 
 /**
  * Enables the plugin by adding it to the config
@@ -39,6 +50,7 @@ const disable = (plugin) => {
 module.exports = {
   getAll,
   isEnabled,
+  isInstalled,
   enable,
   disable,
 };
