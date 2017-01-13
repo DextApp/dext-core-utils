@@ -68,15 +68,20 @@ const install = (plugin, outputDir) => new Promise((resolve, reject) => {
     // download, install, and update configs
     downloadPackage(plugin, outputDir).then((output) => {
       const installProcess = spawn('npm', ['install', '--prefix', output]);
-      installProcess.on('close', (code) => {
-        if (code) {
-          reject(ERR_MODULE_DOWNLOAD_ERROR);
+      installProcess
+        .on('error', (err) => {
+          reject(err);
           return;
-        }
-        // enable the plugin
-        plugins.enable(plugin);
-        resolve();
-      });
+        })
+        .on('close', (code) => {
+          if (code) {
+            reject(ERR_MODULE_DOWNLOAD_ERROR);
+            return;
+          }
+          // enable the plugin
+          plugins.enable(plugin);
+          resolve();
+        });
     });
   });
 });
