@@ -51,14 +51,33 @@ const checkOnNpm = plugin => new Promise((resolve) => {
  *
  * @param {String} plugin - The name of the plugin/package
  * @param {String} outputDir - The directory to install the plugin/package
+ * @param {Object} options - Optional options
  * @return {Promise}
  */
-const install = (plugin, outputDir) => new Promise((resolve, reject) => {
+const install = (plugin, outputDir, options) => new Promise((resolve, reject) => {
   if (plugins.isEnabled(plugin)) {
     reject(ERR_MODULE_ENABLED);
     return;
   }
+  return startInstall(plugin, outputDir, options)
+    .then(resolve)
+    .catch(reject);
+});
 
+/**
+ * Starts the installation process:
+ *
+ * - check on npm
+ * - download package
+ * - run npm install in downloaded directory
+ *
+ * @private
+ * @param {String} plugin - The name of the plugin/package
+ * @param {String} outputDir - The directory to install the plugin/package
+ * @param {Object} options - Optional options
+ * @return {Promise}
+ */
+const startInstall = (plugin, outputDir, options) => new Promise((resolve, reject) => {
   checkOnNpm(plugin).then((found) => {
     // if the plugin is not found
     if (!found) {
@@ -67,7 +86,13 @@ const install = (plugin, outputDir) => new Promise((resolve, reject) => {
     }
     // download, install, and update configs
     downloadPackage(plugin, outputDir).then((output) => {
-      const installProcess = spawn('npm', ['install', '--prefix', output]);
+      let installOptions = null;
+      if (options && options.debug) {
+        installOptions = {
+          stdio: 'inherit',
+        };
+      }
+      const installProcess = spawn('npm', ['install', '--prefix', output], installOptions);
       installProcess
         .on('error', (err) => {
           reject(err);
@@ -194,6 +219,7 @@ const getConfig = () => new Promise((resolve) => {
 module.exports = {
   checkOnNpm,
   install,
+  startInstall,
   uninstall,
   createSymLink,
   removeSymLink,

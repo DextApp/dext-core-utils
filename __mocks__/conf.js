@@ -18,6 +18,10 @@ const Conf = class {
   set(key, value) {
     this.store[key] = value;
   }
+
+  clear() {
+    this.store = {};
+  }
 };
 
 Conf.__setCwd = (cwd) => {
