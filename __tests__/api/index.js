@@ -65,7 +65,7 @@ describe('plugins', () => {
 
   it('should install a plugin', async () => {
     require('child_process').__setCode(null);
-    await api.install('SHOULD_EXIST', '/jest/test');
+    await api.install('SHOULD_EXIST', '/jest/test', { debug: true });
     expect(await api.plugins.getAll()).toContain('SHOULD_EXIST');
   });
 
@@ -83,6 +83,18 @@ describe('plugins', () => {
       await api.install('SHOULD_NOT_EXIST', '/jest/test');
     } catch (err) {
       expect(err).toBe(ERR_MODULE_NOT_FOUND);
+    }
+  });
+
+  it('should fail to install a plugin', async () => {
+    require('npm-name').__setAvailable(true);
+    const cp = require('child_process');
+    cp.__setCode('SHOULD_HAVE_ERRORED');
+    cp.__setProcessShouldError(true);
+    try {
+      await api.startInstall('SHOULD_EXIST', '/jest/test');
+    } catch (err) {
+      expect(err).toBe('SHOULD_HAVE_ERRORED');
     }
   });
 
