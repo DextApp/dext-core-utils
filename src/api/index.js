@@ -47,24 +47,6 @@ const checkOnNpm = plugin => new Promise((resolve) => {
 });
 
 /**
- * Installs and enabled a plugin/package and saves it to the given directory
- *
- * @param {String} plugin - The name of the plugin/package
- * @param {String} outputDir - The directory to install the plugin/package
- * @param {Object} options - Optional options
- * @return {Promise}
- */
-const install = (plugin, outputDir, options) => new Promise((resolve, reject) => {
-  if (plugins.isEnabled(plugin)) {
-    reject(ERR_MODULE_ENABLED);
-    return;
-  }
-  return startInstall(plugin, outputDir, options)
-    .then(resolve)
-    .catch(reject);
-});
-
-/**
  * Starts the installation process:
  *
  * - check on npm
@@ -86,11 +68,11 @@ const startInstall = (plugin, outputDir, options) => new Promise((resolve, rejec
     }
     // download, install, and update configs
     downloadPackage(plugin, outputDir).then((output) => {
-      let installOptions = null;
+      const installOptions = {
+        stdio: 'ignore',
+      };
       if (options && options.debug) {
-        installOptions = {
-          stdio: 'inherit',
-        };
+        installOptions.stdio = 'inherit';
       }
       const installProcess = spawn('npm', ['install', '--prefix', output], installOptions);
       installProcess
@@ -109,6 +91,24 @@ const startInstall = (plugin, outputDir, options) => new Promise((resolve, rejec
         });
     });
   });
+});
+
+/**
+ * Installs and enabled a plugin/package and saves it to the given directory
+ *
+ * @param {String} plugin - The name of the plugin/package
+ * @param {String} outputDir - The directory to install the plugin/package
+ * @param {Object} options - Optional options
+ * @return {Promise}
+ */
+const install = (plugin, outputDir, options) => new Promise((resolve, reject) => {
+  if (plugins.isEnabled(plugin)) {
+    reject(ERR_MODULE_ENABLED);
+    return;
+  }
+  startInstall(plugin, outputDir, options)
+    .then(resolve)
+    .catch(reject);
 });
 
 /**
