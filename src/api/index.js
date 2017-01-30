@@ -86,6 +86,7 @@ const startInstall = (plugin, outputDir, options) => new Promise((resolve, rejec
             return;
           }
           // enable the plugin
+          plugins.add(plugin);
           plugins.enable(plugin);
           resolve();
         });
@@ -133,7 +134,7 @@ const uninstall = (plugin, srcDir) => new Promise((resolve, reject) => {
       return;
     }
     // disable the plugin
-    plugins.disable(plugin);
+    plugins.remove(plugin);
     resolve();
   });
 });
@@ -166,7 +167,7 @@ const createSymLink = (plugin, src) => new Promise((resolve) => {
 const removeSymLink = plugin => new Promise((resolve) => {
   const dest = getPluginPath(plugin);
   fs.unlink(dest, () => {
-    plugins.disable(plugin);
+    plugins.remove(plugin);
     resolve({
       destPath: dest,
     });
