@@ -7,6 +7,7 @@ module.exports = class extends Conf {
       defaults: {
         theme: '',
         plugins: [],
+        enabledPlugins: [],
       },
     };
     const o = Object.assign({}, opts, defaultOpts);
