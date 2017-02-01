@@ -7,6 +7,7 @@ const { PLUGIN_PATH } = require('../utils/paths');
 const config = new Conf();
 
 const getAll = () => config.get('plugins') || [];
+const getAllPlugins = () => fs.readdirSync(PLUGIN_PATH);
 
 /**
  * Checks if the plugin is already enabled
