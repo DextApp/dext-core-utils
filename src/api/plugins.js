@@ -50,6 +50,7 @@ const disable = (plugin) => {
 
 module.exports = {
   getAll,
+  getAllPlugins,
   isEnabled,
   isInstalled,
   enable,
