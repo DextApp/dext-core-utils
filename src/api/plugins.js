@@ -6,15 +6,27 @@ const { PLUGIN_PATH } = require('../utils/paths');
 // initialize a new config file
 const config = new Conf();
 
+/**
+ * Retrieve a list of enabled plugins (from the config)
+ *
+ * @return {String[]} - A list of enabled plugins
+ */
 const getAll = () => config.get('plugins') || [];
-const getAllPlugins = () => {
-  return new Promise((resolve, reject) => {
-    fs.readFile(PLUGIN_PATH, (err, data) => {
-      if(err) reject(err);
-      else resolve(data);
-    });
+
+/**
+ * Retrieve all plugins in the file system
+ *
+ * @return {String[]} - A list of plugins found in the plugins directory
+ */
+const getAllPlugins = () => new Promise((resolve, reject) => {
+  fs.readdir(PLUGIN_PATH, (err, data) => {
+    if (err) {
+      reject(err);
+    } else {
+      resolve(data);
+    }
   });
-}
+});
 
 /**
  * Checks if the plugin is already enabled
