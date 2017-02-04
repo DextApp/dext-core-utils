@@ -7,7 +7,14 @@ const { PLUGIN_PATH } = require('../utils/paths');
 const config = new Conf();
 
 const getAll = () => config.get('plugins') || [];
-const getAllPlugins = () => fs.readdirSync(PLUGIN_PATH);
+const getAllPlugins = () => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(PLUGIN_PATH, (err, data) => {
+      if(err) reject(err);
+      else resolve(data);
+    });
+  });
+}
 
 /**
  * Checks if the plugin is already enabled
