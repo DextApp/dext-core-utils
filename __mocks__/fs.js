@@ -1,5 +1,6 @@
 const fs = jest.genMockFromModule('fs');
 
+let _error = null;
 let _files = [];
 
 /**
@@ -9,6 +10,15 @@ let _files = [];
  */
 fs.__setFiles = (files) => {
   _files = files;
+};
+
+/**
+ * Set a return error if necessary
+ *
+ * @param {String}
+ */
+fs.__setError = (error) => {
+  _error = error;
 };
 
 // Mocks fs.link
@@ -28,5 +38,20 @@ fs.unlink = (dest, callback) => {
  * @return {Boolean}
  */
 fs.existsSync = filePath => _files.indexOf(filePath) > -1;
+
+/**
+ * Reads the directory and apply the callback
+ * with the mocked values
+ *
+ * @param {String} directory
+ * @param {Function} callback
+ */
+fs.readdir = (directory, callback) => {
+  if (_error) {
+    callback.call(null, _error);
+  } else {
+    callback.call(null, null, _files);
+  }
+};
 
 module.exports = fs;
