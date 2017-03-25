@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const spawn = require('cross-spawn');
 const rimraf = require('rimraf');
 const npmName = require('npm-name');
@@ -14,7 +15,8 @@ const {
 const Conf = require('../utils/conf');
 const plugins = require('./plugins');
 const { downloadPackage } = require('../utils/download');
-const { getPluginPath } = require('../utils/paths');
+const paths = require('../utils/paths');
+const { getPluginPath } = paths;
 const { searchPackages } = require('../utils/search');
 
 const config = new Conf();
@@ -34,6 +36,23 @@ const search = searchTerm => new Promise((resolve, reject) => {
 
     resolve(packages);
   });
+});
+
+const updateConfig = () => new Promise((resolve, reject) => {
+    fs.readdir(paths.PLUGIN_PATH, (err, files) => {
+        if(err){
+            reject(err);
+            return;
+        }
+        let pls = files.filter((file) => fs.statSync(path.join(paths.PLUGIN_PATH, file)).isDirectory());
+        confPls = config.get('plugins');
+        pls = pls.filter((p) => confPls.indexOf(p) != -1);
+        config.set('plugins', pls);
+        if(pls.indexOf(config.get('theme')) == -1){
+            config.set('theme', '');
+        }
+        resolve();
+    });
 });
 
 /**
@@ -228,4 +247,5 @@ module.exports = {
   getTheme,
   getConfig,
   plugins,
+  updateConfig
 };

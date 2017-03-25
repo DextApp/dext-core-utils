@@ -12,6 +12,14 @@ const config = new Conf();
  * @return {String[]} - A list of enabled plugins
  */
 const getAll = () => config.get('plugins') || [];
+const getAllPlugins = () => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(PLUGIN_PATH, (err, data) => {
+      if(err) reject(err);
+      else resolve(data);
+    });
+  });
+}
 
 /**
  * Retrieve all plugins in the file system
