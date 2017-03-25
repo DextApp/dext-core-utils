@@ -37,6 +37,20 @@ const search = searchTerm => new Promise((resolve, reject) => {
 });
 
 /**
+  * Updates the config to match the ~/.dext/plugins directory
+  * If current theme is not in the plugin directory, it is set to an empty string
+  */
+const updateConfig = () => new Promise((resolve, reject) => {
+  plugins.fetchPlugins.then((pls) => {
+    config.set('plugins', pls);
+    if(pls.indexOf(config.get('theme')) == -1){
+        config.set('theme', '');
+    }
+    resolve();
+  }, (err) => reject(err));
+});
+
+/**
  * Checks if the plugin/package exists on npm
  *
  * @param {String} plugin - The name of the plugin/package
@@ -228,4 +242,5 @@ module.exports = {
   getTheme,
   getConfig,
   plugins,
+  updateConfig
 };

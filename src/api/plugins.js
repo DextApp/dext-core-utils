@@ -18,12 +18,13 @@ const getAll = () => config.get('plugins') || [];
  *
  * @return {String[]} - A list of plugins found in the plugins directory
  */
-const getAllPlugins = () => new Promise((resolve, reject) => {
-  fs.readdir(PLUGIN_PATH, (err, data) => {
+const fetchPlugins = () => new Promise((resolve, reject) => {
+  fs.readdir(PLUGIN_PATH, (err, files) => {
     if (err) {
       reject(err);
     } else {
-      resolve(data);
+      files = files.filter((file) => fs.statSync(path.join(paths.PLUGIN_PATH, file)).isDirectory());
+      resolve(files);
     }
   });
 });
@@ -69,7 +70,7 @@ const disable = (plugin) => {
 
 module.exports = {
   getAll,
-  getAllPlugins,
+  fetchPlugins,
   isEnabled,
   isInstalled,
   enable,
