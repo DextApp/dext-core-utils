@@ -84,11 +84,12 @@ const startInstall = (plugin, outputDir, options) => new Promise((resolve, rejec
     downloadPackage(plugin, outputDir).then((output) => {
       const installOptions = {
         stdio: 'ignore',
+        cwd: output
       };
       if (options && options.debug) {
         installOptions.stdio = 'inherit';
       }
-      const installProcess = spawn('npm', ['install', '--prefix', output], installOptions);
+      const installProcess = spawn('npm', ['install'], installOptions);
       installProcess
         .on('error', (err) => {
           reject(err);
@@ -108,7 +109,7 @@ const startInstall = (plugin, outputDir, options) => new Promise((resolve, rejec
 });
 
 /**
- * Installs and enabled a plugin/package and saves it to the given directory
+ * Installs and enables a plugin/package and saves it to the given directory
  *
  * @param {String} plugin - The name of the plugin/package
  * @param {String} outputDir - The directory to install the plugin/package
