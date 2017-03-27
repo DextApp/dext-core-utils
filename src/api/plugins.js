@@ -6,7 +6,28 @@ const { PLUGIN_PATH } = require('../utils/paths');
 // initialize a new config file
 const config = new Conf();
 
+/**
+ * Retrieve a list of enabled plugins (from the config)
+ *
+ * @return {String[]} - A list of enabled plugins
+ */
 const getAll = () => config.get('plugins') || [];
+
+/**
+ * Retrieve all plugins in the file system
+ *
+ * @return {String[]} - A list of plugins found in the plugins directory
+ */
+const fetchPlugins = () => new Promise((resolve, reject) => {
+  fs.readdir(PLUGIN_PATH, (err, files) => {
+    if (err) {
+      reject(err);
+    } else {
+      files = files.filter((file) => fs.statSync(path.join(paths.PLUGIN_PATH, file)).isDirectory());
+      resolve(files);
+    }
+  });
+});
 
 /**
  * Checks if the plugin is already enabled
@@ -49,6 +70,7 @@ const disable = (plugin) => {
 
 module.exports = {
   getAll,
+  fetchPlugins,
   isEnabled,
   isInstalled,
   enable,

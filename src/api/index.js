@@ -37,6 +37,20 @@ const search = searchTerm => new Promise((resolve, reject) => {
 });
 
 /**
+  * Updates the config to match the ~/.dext/plugins directory
+  * If current theme is not in the plugin directory, it is set to an empty string
+  */
+const updateConfig = () => new Promise((resolve, reject) => {
+  plugins.fetchPlugins.then((pls) => {
+    config.set('plugins', pls);
+    if(pls.indexOf(config.get('theme')) == -1){
+        config.set('theme', '');
+    }
+    resolve();
+  }, (err) => reject(err));
+});
+
+/**
  * Checks if the plugin/package exists on npm
  *
  * @param {String} plugin - The name of the plugin/package
@@ -70,11 +84,12 @@ const startInstall = (plugin, outputDir, options) => new Promise((resolve, rejec
     downloadPackage(plugin, outputDir).then((output) => {
       const installOptions = {
         stdio: 'ignore',
+        cwd: output
       };
       if (options && options.debug) {
         installOptions.stdio = 'inherit';
       }
-      const installProcess = spawn('npm', ['install', '--prefix', output], installOptions);
+      const installProcess = spawn('npm', ['install'], installOptions);
       installProcess
         .on('error', (err) => {
           reject(err);
@@ -94,7 +109,7 @@ const startInstall = (plugin, outputDir, options) => new Promise((resolve, rejec
 });
 
 /**
- * Installs and enabled a plugin/package and saves it to the given directory
+ * Installs and enables a plugin/package and saves it to the given directory
  *
  * @param {String} plugin - The name of the plugin/package
  * @param {String} outputDir - The directory to install the plugin/package
@@ -228,4 +243,5 @@ module.exports = {
   getTheme,
   getConfig,
   plugins,
+  updateConfig
 };
