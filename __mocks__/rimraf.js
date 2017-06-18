@@ -1,14 +1,13 @@
 // create a mock error
 let mockError = null;
 
-
 /**
  * Sets the mock error
  *
  * @param {String} data
  */
-const __setError = (error) => {
-  mockError = error;
+const __setError = error => {
+    mockError = error;
 };
 
 /**
@@ -18,7 +17,7 @@ const __setError = (error) => {
  * @param {Function} callback
  */
 const rimraf = (dir, callback) => {
-  callback.call(null, mockError);
+    callback.call(null, mockError);
 };
 
 rimraf.__setError = __setError;

@@ -12,8 +12,8 @@ let mockData = null;
  *
  * @param {String} data
  */
-const __setMockResponse = (data) => {
-  mockData = data;
+const __setMockResponse = data => {
+    mockData = data;
 };
 
 /**
@@ -23,10 +23,14 @@ const __setMockResponse = (data) => {
  * @param {Function} callback
  */
 const get = (url, callback) => {
-  const mockResponse = new MockServerResponse();
-  process.nextTick(() => { mockResponse.emit('data', mockData); });
-  process.nextTick(() => { mockResponse.emit('end'); });
-  callback.call(null, mockResponse);
+    const mockResponse = new MockServerResponse();
+    process.nextTick(() => {
+        mockResponse.emit('data', mockData);
+    });
+    process.nextTick(() => {
+        mockResponse.emit('end');
+    });
+    callback.call(null, mockResponse);
 };
 
 https.__setMockResponse = __setMockResponse;

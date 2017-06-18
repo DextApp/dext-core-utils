@@ -8,8 +8,8 @@ let _files = [];
  *
  * @param {String[]}
  */
-fs.__setFiles = (files) => {
-  _files = files;
+fs.__setFiles = files => {
+    _files = files;
 };
 
 /**
@@ -17,18 +17,18 @@ fs.__setFiles = (files) => {
  *
  * @param {String}
  */
-fs.__setError = (error) => {
-  _error = error;
+fs.__setError = error => {
+    _error = error;
 };
 
 // Mocks fs.link
 fs.link = (src, dest, callback) => {
-  callback.call(null);
+    callback.call(null);
 };
 
 // Mocks fs.unlink
 fs.unlink = (dest, callback) => {
-  callback.call(null);
+    callback.call(null);
 };
 
 /**
@@ -47,11 +47,11 @@ fs.existsSync = filePath => _files.indexOf(filePath) > -1;
  * @param {Function} callback
  */
 fs.readdir = (directory, callback) => {
-  if (_error) {
-    callback.call(null, _error);
-  } else {
-    callback.call(null, null, _files);
-  }
+    if (_error) {
+        callback.call(null, _error);
+    } else {
+        callback.call(null, null, _files);
+    }
 };
 
 module.exports = fs;
