@@ -4,7 +4,7 @@
   "description": "Utility modules shared between Dext and Dext Package Manager.",
   "main": "src/index.js",
   "scripts": {
-    "lint": "eslint __mocks__ __tests__ src",
+    "precommit": "lint-staged",
     "test": "jest --coverage"
   },
   "author": "Vu Tran <vu@vu-tran.com>",
@@ -30,6 +30,15 @@
     "eslint": "^3.6.1",
     "eslint-config-airbnb-base": "^8.0.0",
     "eslint-plugin-import": "^1.16.0",
-    "jest": "^16.0.0"
+    "husky": "^0.13.4",
+    "jest": "^16.0.0",
+    "lint-staged": "^4.0.0",
+    "prettier": "^1.4.4"
+  },
+  "lint-staged": {
+    "{__mocks__,__tests__,src}/**/*.js{,x}": [
+      "prettier --write --trailing-comma es5 --single-quote --tab-width 4",
+      "git add"
+    ]
   }
 }
