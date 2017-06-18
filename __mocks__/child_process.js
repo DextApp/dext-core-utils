@@ -33,7 +33,6 @@ const __setProcessShouldError = flag => {
  * @param {Array} args
  * @param {Object} options
  */
-// eslint-disable-next-line no-unused-vars
 const spawn = (command, args, options) => {
     const mockProcess = new MockChildProcess();
     process.nextTick(() => {

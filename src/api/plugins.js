@@ -38,7 +38,6 @@ const fetchPlugins = () =>
  * @param {String} plugin - The plugin name
  * @return {Boolean}
  */
-// eslint-disable-next-line no-bitwise
 const isEnabled = plugin => ~getAll().indexOf(plugin);
 
 /**

@@ -16,7 +16,6 @@ const __setAvailable = available => {
  * @param {String} plugin - The package name to check
  * @return {Promise} - Resolve true if the pacakge should not exist
  */
-// eslint-disable-next-line no-unused-vars
 const npmName = plugin =>
     new Promise(resolve => {
         process.nextTick(() => {
