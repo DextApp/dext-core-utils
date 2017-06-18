@@ -54,4 +54,16 @@ fs.readdir = (directory, callback) => {
     }
 };
 
+/**
+ * Returns a fake fs.Stat file
+ *
+ * @param {String} path
+ * @return {Object}
+ */
+fs.statSync = path => {
+    return {
+        isDirectory: jest.fn(() => true),
+    };
+};
+
 module.exports = fs;

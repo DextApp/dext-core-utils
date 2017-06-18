@@ -24,12 +24,10 @@ const fetchPlugins = () =>
             if (err) {
                 reject(err);
             } else {
-                files = files.filter(file =>
-                    fs
-                        .statSync(path.join(paths.PLUGIN_PATH, file))
-                        .isDirectory()
+                const ret = files.filter(file =>
+                    fs.statSync(path.join(PLUGIN_PATH, file)).isDirectory()
                 );
-                resolve(files);
+                resolve(ret);
             }
         });
     });

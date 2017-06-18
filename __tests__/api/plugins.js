@@ -7,21 +7,21 @@ jest.mock('fs');
 describe('plugins', () => {
     it('should retrieve all plugins from the file system', async () => {
         require('fs').__setFiles([
-            '/dext/plugins/foo-plugin',
-            '/dext/plugins/bar-plugin',
-            '/dext/plugins/baz-plugin',
+            `${PLUGIN_PATH}/foo-plugin`,
+            `${PLUGIN_PATH}/bar-plugin`,
+            `${PLUGIN_PATH}/baz-plugin`,
         ]);
-        expect(await plugins.getAllPlugins()).toEqual([
-            '/dext/plugins/foo-plugin',
-            '/dext/plugins/bar-plugin',
-            '/dext/plugins/baz-plugin',
+        expect(await plugins.fetchPlugins()).toEqual([
+            `${PLUGIN_PATH}/foo-plugin`,
+            `${PLUGIN_PATH}/bar-plugin`,
+            `${PLUGIN_PATH}/baz-plugin`,
         ]);
     });
 
     it('should return no plugins', async () => {
         require('fs').__setError('NO_PLUGINS_FOUND');
         try {
-            await plugins.getAllPlugins();
+            await plugins.fetchPlugins();
         } catch (err) {
             expect(err).toEqual('NO_PLUGINS_FOUND');
         }
