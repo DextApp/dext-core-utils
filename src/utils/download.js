@@ -11,9 +11,9 @@ const getPackageUrl = pkg => `http://registry.npmjs.org/${pkg}`;
  * @return {Object}
  */
 const stripPackageDirectory = file =>
-    Object.assign({}, file, {
-        path: file.path.replace(/^package/, ''),
-    });
+  Object.assign({}, file, {
+    path: file.path.replace(/^package/, ''),
+  });
 
 /**
  * Downloads and extracts the package
@@ -23,28 +23,28 @@ const stripPackageDirectory = file =>
  * @return {Promise} - The downloaded path
  */
 const downloadPackage = (pkg, outputDir) =>
-    new Promise(resolve => {
-        let body = '';
-        // retrieve the package details
-        http.get(getPackageUrl(pkg), res => {
-            res.on('data', chunk => {
-                body += chunk;
-            });
-            res.on('end', () => {
-                const j = JSON.parse(body);
-                // get the latest version download URL
-                // and download the the plugin directory
-                const latestVersion = j['dist-tags'].latest;
-                const downloadUrl = j.versions[latestVersion].dist.tarball;
-                const options = {
-                    extract: true,
-                    map: stripPackageDirectory,
-                };
-                download(downloadUrl, outputDir, options).then(() =>
-                    resolve(outputDir)
-                );
-            });
-        });
+  new Promise(resolve => {
+    let body = '';
+    // retrieve the package details
+    http.get(getPackageUrl(pkg), res => {
+      res.on('data', chunk => {
+        body += chunk;
+      });
+      res.on('end', () => {
+        const j = JSON.parse(body);
+        // get the latest version download URL
+        // and download the the plugin directory
+        const latestVersion = j['dist-tags'].latest;
+        const downloadUrl = j.versions[latestVersion].dist.tarball;
+        const options = {
+          extract: true,
+          map: stripPackageDirectory,
+        };
+        download(downloadUrl, outputDir, options).then(() =>
+          resolve(outputDir)
+        );
+      });
     });
+  });
 
 export { getPackageUrl, stripPackageDirectory, downloadPackage };

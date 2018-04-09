@@ -19,18 +19,18 @@ const getAll = () => config.get('plugins') || [];
  * @return {String[]} - A list of plugins found in the plugins directory
  */
 const fetchPlugins = () =>
-    new Promise((resolve, reject) => {
-        fs.readdir(PLUGIN_PATH, (err, files) => {
-            if (err) {
-                reject(err);
-            } else {
-                const ret = files.filter(file =>
-                    fs.statSync(path.join(PLUGIN_PATH, file)).isDirectory()
-                );
-                resolve(ret);
-            }
-        });
+  new Promise((resolve, reject) => {
+    fs.readdir(PLUGIN_PATH, (err, files) => {
+      if (err) {
+        reject(err);
+      } else {
+        const ret = files.filter(file =>
+          fs.statSync(path.join(PLUGIN_PATH, file)).isDirectory()
+        );
+        resolve(ret);
+      }
     });
+  });
 
 /**
  * Checks if the plugin is already enabled
@@ -54,9 +54,9 @@ const isInstalled = plugin => fs.existsSync(path.resolve(PLUGIN_PATH, plugin));
  * @param {String} plugin - The plugin name
  */
 const enable = plugin => {
-    const plugins = getAll();
-    plugins.push(plugin);
-    config.set('plugins', plugins);
+  const plugins = getAll();
+  plugins.push(plugin);
+  config.set('plugins', plugins);
 };
 
 /**
@@ -65,9 +65,9 @@ const enable = plugin => {
  * @param {String} plugin - The plugin name
  */
 const disable = plugin => {
-    const plugins = getAll();
-    plugins.splice(plugins.indexOf(plugin), 1);
-    config.set('plugins', plugins);
+  const plugins = getAll();
+  plugins.splice(plugins.indexOf(plugin), 1);
+  config.set('plugins', plugins);
 };
 
 export { getAll, fetchPlugins, isEnabled, isInstalled, enable, disable };
