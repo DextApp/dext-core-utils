@@ -2,7 +2,7 @@
   "name": "dext-core-utils",
   "version": "0.6.0",
   "description": "Utility modules shared between Dext and Dext Package Manager.",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "precommit": "lint-staged",
     "test": "jest --coverage",
