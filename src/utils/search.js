@@ -42,7 +42,4 @@ const searchPackages = q =>
         });
     });
 
-module.exports = {
-    getSearchUrl,
-    searchPackages,
-};
+export { getSearchUrl, searchPackages };

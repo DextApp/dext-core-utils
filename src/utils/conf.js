@@ -1,7 +1,7 @@
 const Conf = require('conf');
 const { DEXT_PATH } = require('./paths');
 
-module.exports = class extends Conf {
+export default class extends Conf {
     constructor(opts) {
         const defaultOpts = {
             defaults: {
@@ -13,4 +13,4 @@ module.exports = class extends Conf {
         o.cwd = DEXT_PATH;
         super(o);
     }
-};
+}

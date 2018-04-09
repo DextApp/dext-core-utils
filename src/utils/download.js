@@ -47,8 +47,4 @@ const downloadPackage = (pkg, outputDir) =>
         });
     });
 
-module.exports = {
-    getPackageUrl,
-    stripPackageDirectory,
-    downloadPackage,
-};
+export { getPackageUrl, stripPackageDirectory, downloadPackage };

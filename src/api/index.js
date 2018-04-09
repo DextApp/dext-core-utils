@@ -20,11 +20,11 @@ const { searchPackages } = require('../utils/search');
 const config = new Conf();
 
 /**
-  * Lists plugins & themes with the keyword 'dext-plugin' or 'dext-theme' on npm
-  *
-  * @param {String} plugin - The name of the plugin/theme
-  * @return {Promise} - Resolves the search results
-  */
+ * Lists plugins & themes with the keyword 'dext-plugin' or 'dext-theme' on npm
+ *
+ * @param {String} plugin - The name of the plugin/theme
+ * @return {Promise} - Resolves the search results
+ */
 const search = searchTerm =>
     new Promise((resolve, reject) => {
         searchPackages(searchTerm).then(packages => {
@@ -38,9 +38,9 @@ const search = searchTerm =>
     });
 
 /**
-  * Updates the config to match the ~/.dext/plugins directory
-  * If current theme is not in the plugin directory, it is set to an empty string
-  */
+ * Updates the config to match the ~/.dext/plugins directory
+ * If current theme is not in the plugin directory, it is set to an empty string
+ */
 const updateConfig = () =>
     new Promise((resolve, reject) => {
         plugins.fetchPlugins.then(
@@ -133,7 +133,9 @@ const install = (plugin, outputDir, options) =>
             reject(ERR_MODULE_ENABLED);
             return;
         }
-        startInstall(plugin, outputDir, options).then(resolve).catch(reject);
+        startInstall(plugin, outputDir, options)
+            .then(resolve)
+            .catch(reject);
     });
 
 /**
@@ -247,7 +249,7 @@ const getConfig = () =>
         resolve(config.store);
     });
 
-module.exports = {
+export {
     checkOnNpm,
     install,
     startInstall,

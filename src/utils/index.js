@@ -3,9 +3,4 @@ const download = require('./download');
 const paths = require('./paths');
 const search = require('./search');
 
-module.exports = {
-    conf,
-    download,
-    paths,
-    search,
-};
+export { conf, download, paths, search };

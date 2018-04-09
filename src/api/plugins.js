@@ -70,11 +70,4 @@ const disable = plugin => {
     config.set('plugins', plugins);
 };
 
-module.exports = {
-    getAll,
-    fetchPlugins,
-    isEnabled,
-    isInstalled,
-    enable,
-    disable,
-};
+export { getAll, fetchPlugins, isEnabled, isInstalled, enable, disable };

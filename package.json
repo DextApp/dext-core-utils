@@ -5,7 +5,10 @@
   "main": "src/index.js",
   "scripts": {
     "precommit": "lint-staged",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "format": "npm run format:js && npm run format:md",
+    "format:js": "prettier --write '{*.js,*.json,{src,__tests__,typings}/**/*.ts{,x}}'",
+    "format:md": "prettier --parser markdown --write '*.md'"
   },
   "author": "Vu Tran <vu@vu-tran.com>",
   "repository": {
@@ -14,27 +17,38 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@types/jest": "^22.2.2",
+    "@types/node": "^9.6.2",
     "conf": "^1.4.0",
     "cross-spawn": "^6.0.5",
     "download": "^6.2.5",
     "npm-name": "^3.2.0",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "tslib": "^1.9.0"
   },
   "devDependencies": {
-    "babel-jest": "^22.4.3",
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
     "coveralls": "^3.0.0",
     "husky": "^0.14.3",
     "jest": "^22.4.3",
     "lint-staged": "^7.0.4",
-    "prettier": "^1.11.1"
+    "prettier": "^1.11.1",
+    "ts-jest": "^22.4.2",
+    "typescript": "^2.8.1"
   },
   "lint-staged": {
     "{__mocks__,__tests__,src}/**/*.js{,x}": [
       "prettier --write --trailing-comma es5 --single-quote --tab-width 4",
       "git add"
     ]
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      ".(ts|tsx|js)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|js)$"
   }
 }

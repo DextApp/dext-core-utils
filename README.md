@@ -20,17 +20,17 @@ $ yarn add dext-core-utils
 
 ## Contributing
 
-♥ ***Dext*** and want to contribute? I am seeking contributors of any levels to help grow the application. You can help contribute to the growth of this application in many ways.
+♥ **_Dext_** and want to contribute? I am seeking contributors of any levels to help grow the application. You can help contribute to the growth of this application in many ways.
 
-- [Bug Reports](CONTRIBUTING.md#bug-reports)
-- [Feature Requests](CONTRIBUTING.md#feature-requests)
-- [Pull Requests](CONTRIBUTING.md#pull-requests)
-- [Feedback and Suggestions](CONTRIBUTING.md#feedback-and-suggestions)
+* [Bug Reports](CONTRIBUTING.md#bug-reports)
+* [Feature Requests](CONTRIBUTING.md#feature-requests)
+* [Pull Requests](CONTRIBUTING.md#pull-requests)
+* [Feedback and Suggestions](CONTRIBUTING.md#feedback-and-suggestions)
 
 ## Related
 
-- [dext](https://github.com/vutran/dext) - The Dext smart launcher
-- [dext-cli](https://github.com/vutran/dext-cli) - Dext Package Manager
+* [dext](https://github.com/vutran/dext) - The Dext smart launcher
+* [dext-cli](https://github.com/vutran/dext-cli) - Dext Package Manager
 
 ## License
 
