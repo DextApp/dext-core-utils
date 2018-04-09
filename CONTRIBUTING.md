@@ -43,15 +43,15 @@ $ cd dext-core-utils
 $ npm start
 ```
 
-5.  Submit a [Pull Request](https://github.com/vutran/dext-core-utils/pulls) to the `develop` branch if you have something great to contribute and a review will proceed.
+5.  Submit a [Pull Request](https://github.com/DextApp/dext-core-utils/pulls) to the `develop` branch if you have something great to contribute and a review will proceed.
 
 ## Bug Reports
 
-Found a bug? Submit it to the [issue tracker](https://github.com/vutran/dext-core-utils/issues) and/or send a [Pull Request](#pull-requests) so we can get it squashed.
+Found a bug? Submit it to the [issue tracker](https://github.com/DextApp/dext-core-utils/issues) and/or send a [Pull Request](#pull-requests) so we can get it squashed.
 
 ## Feature Requests
 
-If you have an idea for a feature, please post them to the [issues tracker](https://github.com/vutran/dext-core-utils/issues) and we can discuss. Not all features will be implemented.
+If you have an idea for a feature, please post them to the [issues tracker](https://github.com/DextApp/dext-core-utils/issues) and we can discuss. Not all features will be implemented.
 
 ## Pull Requests
 
