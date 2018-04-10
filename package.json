@@ -5,7 +5,10 @@
   "main": "src/index.js",
   "scripts": {
     "precommit": "lint-staged",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "format": "npm run format:js && npm run format:md",
+    "format:js": "prettier --write '{*.json,{src,__tests__,__mocks__}/**/*.js}'",
+    "format:md": "prettier --parser markdown --write '*.md'"
   },
   "author": "Vu Tran <vu@vu-tran.com>",
   "repository": {
@@ -33,7 +36,7 @@
   },
   "lint-staged": {
     "{__mocks__,__tests__,src}/**/*.js{,x}": [
-      "prettier --write --trailing-comma es5 --single-quote --tab-width 4",
+      "prettier --write --trailing-comma es5 --single-quote --tab-width 2",
       "git add"
     ]
   }

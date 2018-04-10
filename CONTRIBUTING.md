@@ -2,23 +2,21 @@
 
 ♥ **_Dext_** and want to contribute? I am seeking contributors of any levels to help grow the application. You can help contribute to the growth of this application in many ways.
 
-*   UI/UX design
-*   DX design
-*   Core plugins
-*   Third-party plugins
-*   Feedbacks, and suggestions
+* UI/UX design
+* DX design
+* Core plugins
+* Third-party plugins
+* Feedbacks, and suggestions
 
 **Dext** is still in its very early stage of development and lots of new features and improvements will be added over time.
 
 1.  [Fork](https://help.github.com/articles/fork-a-repo/) and [clone](https://help.github.com/articles/cloning-a-repository/) this repository.
-
 
 ```bash
 $ git clone git@github.com:vutran/dext-core-utils.git
 ```
 
 2.  Switch to the new `dext-core-utils` directory that was created in step 1.
-
 
 ```bash
 $ cd dext-core-utils
@@ -40,7 +38,6 @@ $ cd dext-core-utils
     ```
 
 4.  Boot up the application.
-
 
 ```bash
 $ npm start
