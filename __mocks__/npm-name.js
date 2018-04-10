@@ -7,7 +7,7 @@ let mockAvailable = false;
  * @param {Boolean} available
  */
 const __setAvailable = available => {
-    mockAvailable = available;
+  mockAvailable = available;
 };
 
 /**
@@ -17,15 +17,15 @@ const __setAvailable = available => {
  * @return {Promise} - Resolve true if the pacakge should not exist
  */
 const npmName = plugin =>
-    new Promise(resolve => {
-        process.nextTick(() => {
-            if (mockAvailable) {
-                resolve(false);
-            } else {
-                resolve(true);
-            }
-        });
+  new Promise(resolve => {
+    process.nextTick(() => {
+      if (mockAvailable) {
+        resolve(false);
+      } else {
+        resolve(true);
+      }
     });
+  });
 
 npmName.__setAvailable = __setAvailable;
 

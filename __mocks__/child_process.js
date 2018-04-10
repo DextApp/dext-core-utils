@@ -14,7 +14,7 @@ let processShouldError = false;
  * @param {String} code
  */
 const __setCode = code => {
-    mockCode = code;
+  mockCode = code;
 };
 
 /**
@@ -23,7 +23,7 @@ const __setCode = code => {
  * @param {Boolean} flag
  */
 const __setProcessShouldError = flag => {
-    processShouldError = flag;
+  processShouldError = flag;
 };
 
 /**
@@ -34,15 +34,15 @@ const __setProcessShouldError = flag => {
  * @param {Object} options
  */
 const spawn = (command, args, options) => {
-    const mockProcess = new MockChildProcess();
-    process.nextTick(() => {
-        if (processShouldError) {
-            mockProcess.emit('error', mockCode);
-        } else {
-            mockProcess.emit('close', mockCode);
-        }
-    });
-    return mockProcess;
+  const mockProcess = new MockChildProcess();
+  process.nextTick(() => {
+    if (processShouldError) {
+      mockProcess.emit('error', mockCode);
+    } else {
+      mockProcess.emit('close', mockCode);
+    }
+  });
+  return mockProcess;
 };
 
 cp.__setCode = __setCode;
